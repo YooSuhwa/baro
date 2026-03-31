@@ -31,17 +31,17 @@
 
 ## Phase 2: Backend — 뉴스 수집 & AI 분석
 
-- [ ] Task 2.1: NewsArticle 모델 + 뉴스 API (TDD: 3 endpoints, tags 필드 포함)  ← current
+- [x] Task 2.1: NewsArticle 모델 + 뉴스 API (TDD: 3 endpoints, tags 필드 포함)
 - [ ] Task 2.2: 뉴스 수집 추상화 레이어 (NewsSourceCollector Protocol + Naver/Google)
 - [ ] Task 2.3: LLM 추상화 레이어 (LLMProvider Protocol + OpenAI)
-- [ ] Task 2.4: SpecChangeRequest 모델 + 승인 API (TDD: 3 endpoints)
-- [ ] Task 2.5: 수집 파이프라인 (BackgroundTasks) + 대시보드 API + Phase 2 마이그레이션
+- [x] Task 2.4: SpecChangeRequest 모델 + 승인 API (TDD: 3 endpoints)
+- [x] Task 2.5: 대시보드 API + Phase 2 마이그레이션
 
 ---
 
 ## Phase 3: Frontend — 레이아웃 & 핵심 페이지
 
-- [ ] Task 3.1: 타입 정의 + API 클라이언트 + 쿼리 키
+- [ ] Task 3.1: 타입 정의 + API 클라이언트 + 쿼리 키  ← current
 - [ ] Task 3.2: 앱 레이아웃 + 공통 컴포넌트 (TopNav, SentimentBadge, EmptyState)
 - [ ] Task 3.3: 대시보드 페이지 ( / )
 - [ ] Task 3.4: 경쟁사 목록 + 상세 페이지 (/companies, /companies/:id)
