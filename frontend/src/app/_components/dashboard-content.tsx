@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Building2, Plus } from "lucide-react";
+import { AlertCircle, Building2, Plus, RefreshCw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/shared/empty-state";
@@ -10,10 +10,27 @@ import { CompanyCard } from "./company-card";
 import { NewsFeedItem } from "./news-feed-item";
 
 export function DashboardContent() {
-  const { data, isLoading, error } = useDashboardSummary();
+  const { data, isLoading, error, refetch } = useDashboardSummary();
 
   if (isLoading) return <DashboardSkeleton />;
-  if (error) return <div className="text-red-500">데이터를 불러오는 중 오류가 발생했습니다.</div>;
+
+  if (error) {
+    return (
+      <div role="alert" className="flex flex-col items-center justify-center py-16 text-center">
+        <AlertCircle className="h-10 w-10 text-red-400 mb-3" aria-hidden="true" />
+        <h3 className="text-lg font-medium text-slate-900">데이터를 불러오지 못했습니다</h3>
+        <p className="text-sm text-slate-500 mt-1">잠시 후 다시 시도해주세요.</p>
+        <button
+          onClick={() => refetch()}
+          className="mt-4 inline-flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 motion-safe:transition-colors min-h-[44px]"
+        >
+          <RefreshCw className="h-4 w-4" aria-hidden="true" />
+          다시 시도
+        </button>
+      </div>
+    );
+  }
+
   if (!data) return null;
 
   if (data.companies.length === 0) {
@@ -29,38 +46,41 @@ export function DashboardContent() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" aria-live="polite">
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">경쟁사 현황</h2>
+          <h2 className="text-lg font-semibold leading-tight">경쟁사 현황</h2>
           <Link
             href="/admin/companies/new"
-            className="inline-flex items-center gap-1 rounded-lg border px-3 py-1.5 text-sm font-medium hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 motion-safe:transition-colors min-h-[44px]"
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="h-4 w-4" aria-hidden="true" />
             경쟁사 등록
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {data.companies.map((company) => (
             <CompanyCard key={company.id} company={company} />
           ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Card className="md:col-span-2 lg:col-span-2">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base">최신 뉴스</CardTitle>
-              <Link href="/news" className="text-sm text-gray-500 hover:text-gray-900">
+              <Link
+                href="/news"
+                className="text-sm text-slate-500 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded px-1 py-1 motion-safe:transition-colors"
+              >
                 전체 뉴스 보기 &rarr;
               </Link>
             </div>
           </CardHeader>
           <CardContent>
             {data.recent_news.length === 0 ? (
-              <p className="text-sm text-gray-500 py-4 text-center">
+              <p className="text-sm text-slate-500 py-4 text-center">
                 아직 수집된 뉴스가 없습니다.
               </p>
             ) : (
@@ -76,7 +96,10 @@ export function DashboardContent() {
             <div className="flex items-center justify-between">
               <CardTitle className="text-base">스펙 변경 승인</CardTitle>
               {data.pending_spec_changes_count > 0 && (
-                <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-orange-100 text-orange-600 text-xs font-medium">
+                <span
+                  className="inline-flex items-center justify-center h-5 min-w-[20px] px-1 rounded-full bg-orange-100 text-orange-700 text-xs font-medium"
+                  aria-label={`미승인 변경 사항 ${data.pending_spec_changes_count}건`}
+                >
                   {data.pending_spec_changes_count}
                 </span>
               )}
@@ -84,17 +107,17 @@ export function DashboardContent() {
           </CardHeader>
           <CardContent>
             {data.pending_spec_changes_count === 0 ? (
-              <p className="text-sm text-gray-500 py-4 text-center">
+              <p className="text-sm text-slate-500 py-4 text-center">
                 검토할 변경 사항이 없습니다.
               </p>
             ) : (
-              <div className="space-y-2">
-                <p className="text-sm text-gray-600">
+              <div className="space-y-3">
+                <p className="text-sm text-slate-600">
                   미승인 {data.pending_spec_changes_count}건
                 </p>
                 <Link
                   href="/admin/spec-changes"
-                  className="block w-full text-center rounded-lg border px-3 py-1.5 text-sm font-medium hover:bg-gray-50 transition-colors"
+                  className="block w-full text-center rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 motion-safe:transition-colors min-h-[44px]"
                 >
                   전체 보기
                 </Link>
@@ -109,16 +132,17 @@ export function DashboardContent() {
 
 function DashboardSkeleton() {
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="space-y-6" role="status" aria-label="대시보드 로딩 중">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {Array.from({ length: 4 }).map((_, i) => (
           <Skeleton key={i} className="h-32 rounded-lg" />
         ))}
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Skeleton className="h-64 rounded-lg lg:col-span-2" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Skeleton className="h-64 rounded-lg md:col-span-2 lg:col-span-2" />
         <Skeleton className="h-64 rounded-lg" />
       </div>
+      <span className="sr-only">로딩 중...</span>
     </div>
   );
 }

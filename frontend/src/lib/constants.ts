@@ -1,8 +1,8 @@
 export const SENTIMENT_CONFIG = {
-  positive: { label: "긍정", color: "text-green-600", bgColor: "bg-green-100", barColor: "bg-green-500" },
-  negative: { label: "부정", color: "text-red-600", bgColor: "bg-red-100", barColor: "bg-red-500" },
-  neutral: { label: "중립", color: "text-yellow-600", bgColor: "bg-yellow-100", barColor: "bg-yellow-500" },
-  unknown: { label: "미분류", color: "text-gray-500", bgColor: "bg-gray-100", barColor: "bg-gray-400" },
+  positive: { label: "긍정", color: "text-green-700", bgColor: "bg-green-50", barColor: "bg-green-500" },
+  negative: { label: "부정", color: "text-red-700", bgColor: "bg-red-50", barColor: "bg-red-500" },
+  neutral: { label: "중립", color: "text-amber-700", bgColor: "bg-amber-50", barColor: "bg-amber-500" },
+  unknown: { label: "미분류", color: "text-gray-600", bgColor: "bg-gray-100", barColor: "bg-gray-400" },
 } as const;
 
 export const CATEGORY_LABELS: Record<string, string> = {
