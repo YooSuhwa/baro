@@ -48,3 +48,28 @@ class ProductResponse(BaseModel):
 
 class BulkSpecUpdate(BaseModel):
     specs: list[SpecValueItem]
+
+
+# --- Compare schemas (PRD section 6.2) ---
+
+
+class CompareProductInfo(BaseModel):
+    id: uuid.UUID
+    name: str
+    company: str
+
+
+class CompareFieldValues(BaseModel):
+    field_id: uuid.UUID
+    field_name: str
+    values: dict[str, str | None]  # product_id -> value
+
+
+class CompareCategory(BaseModel):
+    name: str
+    fields: list[CompareFieldValues]
+
+
+class CompareResponse(BaseModel):
+    products: list[CompareProductInfo]
+    categories: list[CompareCategory]

@@ -9,22 +9,22 @@
 ## Phase 0: 프로젝트 초기 설정
 
 - [x] Task 0.1: Git 저장소 초기화 (.gitignore)
-- [ ] Task 0.2: 모노레포 디렉토리 구조 + Docker Compose (PostgreSQL, Redis)  ← current
-- [ ] Task 0.3: Backend 프로젝트 초기화 (FastAPI, pyproject.toml, config, core/database, core/redis, core/models)
-- [ ] Task 0.4: Alembic 마이그레이션 설정
-- [ ] Task 0.5: Backend 공통 모듈 (exceptions, exception_handlers, pagination, schemas)
-- [ ] Task 0.6: Frontend 프로젝트 초기화 (Next.js 15, shadcn/ui, TanStack Query, Vitest)
-- [ ] Task 0.7: CLAUDE.md 프로젝트 설정
+- [x] Task 0.2: 모노레포 디렉토리 구조 + Docker Compose (PostgreSQL, Redis)
+- [x] Task 0.3: Backend 프로젝트 초기화 (FastAPI, pyproject.toml, config, core/database, core/redis, core/models)
+- [x] Task 0.4: Alembic 마이그레이션 설정
+- [x] Task 0.5: Backend 공통 모듈 (exceptions, exception_handlers, pagination, schemas)
+- [x] Task 0.6: Frontend 프로젝트 초기화 (Next.js 15, shadcn/ui, TanStack Query, Vitest)
+- [x] Task 0.7: CLAUDE.md 프로젝트 설정
 
 ---
 
 ## Phase 1: Backend — 데이터 모델 & 핵심 API
 
-- [ ] Task 1.1: Company + SearchKeyword 모델 + 테스트 픽스처
-- [ ] Task 1.2: Company CRUD API (TDD: 5 endpoints)
-- [ ] Task 1.3: Product + SpecValue 모델 & CRUD API (TDD: 6 endpoints, PUT /products/:id/specs 포함)
-- [ ] Task 1.4: SpecField 모델 & CRUD API (TDD: 4 endpoints)
-- [ ] Task 1.5: 제품 스펙 비교 API (GET /products/compare)
+- [x] Task 1.1: Company + SearchKeyword 모델 + 테스트 픽스처
+- [x] Task 1.2: Company CRUD API (TDD: 5 endpoints, 14 tests)
+- [x] Task 1.3: Product + SpecValue 모델 & CRUD API (TDD: 6 endpoints, PUT /products/:id/specs 포함)
+- [x] Task 1.4: SpecField 모델 & CRUD API (TDD: 4 endpoints)
+- [ ] Task 1.5: 제품 스펙 비교 API (GET /products/compare)  ← current
 - [ ] Task 1.6: Alembic 마이그레이션 생성 (Phase 1 모델 일괄)
 
 ---

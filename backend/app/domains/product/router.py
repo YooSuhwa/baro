@@ -1,12 +1,21 @@
 import uuid
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 
 from app.domains.product.dependencies import get_product_service
-from app.domains.product.schemas import BulkSpecUpdate, ProductCreate, ProductResponse, ProductUpdate
+from app.domains.product.schemas import BulkSpecUpdate, CompareResponse, ProductCreate, ProductResponse, ProductUpdate
 from app.domains.product.service import ProductService
 
 router = APIRouter(tags=["products"])
+
+
+@router.get("/products/compare", response_model=CompareResponse)
+async def compare_products(
+    ids: str = Query(..., description="Comma-separated product IDs"),
+    service: ProductService = Depends(get_product_service),
+):
+    product_ids = [uuid.UUID(pid.strip()) for pid in ids.split(",") if pid.strip()]
+    return await service.compare(product_ids)
 
 
 @router.post("/products", response_model=ProductResponse, status_code=201)

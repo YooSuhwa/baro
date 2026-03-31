@@ -5,7 +5,12 @@ from app.core.database import get_db
 from app.domains.company.repository import CompanyRepository
 from app.domains.product.repository import ProductRepository
 from app.domains.product.service import ProductService
+from app.domains.spec_field.repository import SpecFieldRepository
 
 
 async def get_product_service(session: AsyncSession = Depends(get_db)) -> ProductService:
-    return ProductService(ProductRepository(session), CompanyRepository(session))
+    return ProductService(
+        ProductRepository(session),
+        CompanyRepository(session),
+        SpecFieldRepository(session),
+    )
