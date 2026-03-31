@@ -24,14 +24,14 @@
 - [x] Task 1.2: Company CRUD API (TDD: 5 endpoints, 14 tests)
 - [x] Task 1.3: Product + SpecValue 모델 & CRUD API (TDD: 6 endpoints, PUT /products/:id/specs 포함)
 - [x] Task 1.4: SpecField 모델 & CRUD API (TDD: 4 endpoints)
-- [ ] Task 1.5: 제품 스펙 비교 API (GET /products/compare)  ← current
-- [ ] Task 1.6: Alembic 마이그레이션 생성 (Phase 1 모델 일괄)
+- [x] Task 1.5: 제품 스펙 비교 API (GET /products/compare)
+- [x] Task 1.6: Alembic 마이그레이션 생성 (Phase 1 모델 일괄)
 
 ---
 
 ## Phase 2: Backend — 뉴스 수집 & AI 분석
 
-- [ ] Task 2.1: NewsArticle 모델 + 뉴스 API (TDD: 3 endpoints, tags 필드 포함)
+- [ ] Task 2.1: NewsArticle 모델 + 뉴스 API (TDD: 3 endpoints, tags 필드 포함)  ← current
 - [ ] Task 2.2: 뉴스 수집 추상화 레이어 (NewsSourceCollector Protocol + Naver/Google)
 - [ ] Task 2.3: LLM 추상화 레이어 (LLMProvider Protocol + OpenAI)
 - [ ] Task 2.4: SpecChangeRequest 모델 + 승인 API (TDD: 3 endpoints)

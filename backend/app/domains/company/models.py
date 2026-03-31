@@ -26,6 +26,10 @@ class Company(Base, UUIDMixin, TimestampMixin):
         back_populates="company",
         cascade="all, delete-orphan",
     )
+    news_articles: Mapped[list["NewsArticle"]] = relationship(
+        back_populates="company",
+        cascade="all, delete-orphan",
+    )
 
 
 class SearchKeyword(Base, UUIDMixin):

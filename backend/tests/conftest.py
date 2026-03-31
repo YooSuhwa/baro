@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from app.core.database import get_db
 from app.core.models import Base
 from app.domains.company.models import Company, SearchKeyword  # noqa: F401
+from app.domains.news.models import NewsArticle  # noqa: F401
 from app.domains.product.models import Product, SpecValue  # noqa: F401
 from app.domains.spec_field.models import SpecField  # noqa: F401
 from app.main import create_app
