@@ -16,8 +16,10 @@ if config.config_file_name is not None:
 
 target_metadata = Base.metadata
 
-# Domain models - add imports as models are created
-# from app.domains.company.models import Company, SearchKeyword  # noqa: F401
+# Domain models - import all for autogenerate
+from app.domains.company.models import Company, SearchKeyword  # noqa: F401
+from app.domains.product.models import Product, SpecValue  # noqa: F401
+from app.domains.spec_field.models import SpecField  # noqa: F401
 
 
 def run_migrations_offline() -> None:
