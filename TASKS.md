@@ -8,8 +8,8 @@
 
 ## Phase 0: 프로젝트 초기 설정
 
-- [ ] Task 0.1: Git 저장소 초기화 (.gitignore)  ← current
-- [ ] Task 0.2: 모노레포 디렉토리 구조 + Docker Compose (PostgreSQL, Redis)
+- [x] Task 0.1: Git 저장소 초기화 (.gitignore)
+- [ ] Task 0.2: 모노레포 디렉토리 구조 + Docker Compose (PostgreSQL, Redis)  ← current
 - [ ] Task 0.3: Backend 프로젝트 초기화 (FastAPI, pyproject.toml, config, core/database, core/redis, core/models)
 - [ ] Task 0.4: Alembic 마이그레이션 설정
 - [ ] Task 0.5: Backend 공통 모듈 (exceptions, exception_handlers, pagination, schemas)
