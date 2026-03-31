@@ -41,10 +41,10 @@
 
 ## Phase 3: Frontend — 레이아웃 & 핵심 페이지
 
-- [ ] Task 3.1: 타입 정의 + API 클라이언트 + 쿼리 키  ← current
-- [ ] Task 3.2: 앱 레이아웃 + 공통 컴포넌트 (TopNav, SentimentBadge, EmptyState)
-- [ ] Task 3.3: 대시보드 페이지 ( / )
-- [ ] Task 3.4: 경쟁사 목록 + 상세 페이지 (/companies, /companies/:id)
+- [x] Task 3.1: 타입 정의 + API 클라이언트 + 쿼리 키
+- [x] Task 3.2: 앱 레이아웃 + 공통 컴포넌트 (TopNav, SentimentBadge, EmptyState)
+- [x] Task 3.3: 대시보드 페이지 ( / )
+- [ ] Task 3.4: 경쟁사 목록 + 상세 페이지 (/companies, /companies/:id)  ← current
 - [ ] Task 3.5: 경쟁사/제품 등록·수정 폼 (Admin)
 - [ ] Task 3.6: 제품 상세 + 비교 항목 관리
 
