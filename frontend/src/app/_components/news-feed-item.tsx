@@ -1,21 +1,10 @@
 import { ExternalLink } from "lucide-react";
 import { SentimentBadge } from "@/components/shared/sentiment-badge";
+import { timeAgo } from "@/lib/utils";
 import type { NewsArticle } from "@/types/news";
 
 interface NewsFeedItemProps {
   article: NewsArticle;
-}
-
-function timeAgo(dateStr: string): string {
-  const now = new Date();
-  const date = new Date(dateStr);
-  const diffMs = now.getTime() - date.getTime();
-  const diffMin = Math.floor(diffMs / 60000);
-  if (diffMin < 60) return `${diffMin}분 전`;
-  const diffHours = Math.floor(diffMin / 60);
-  if (diffHours < 24) return `${diffHours}시간 전`;
-  const diffDays = Math.floor(diffHours / 24);
-  return `${diffDays}일 전`;
 }
 
 export function NewsFeedItem({ article }: NewsFeedItemProps) {

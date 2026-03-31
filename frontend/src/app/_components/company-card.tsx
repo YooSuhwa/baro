@@ -3,6 +3,7 @@ import { Building2, Newspaper, Package } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SENTIMENT_CONFIG } from "@/lib/constants";
 import type { CompanyCard as CompanyCardType } from "@/types/dashboard";
+import type { Sentiment } from "@/types/news";
 
 interface CompanyCardProps {
   company: CompanyCardType;
@@ -13,7 +14,7 @@ export function CompanyCard({ company }: CompanyCardProps) {
   const dominant = total > 0
     ? (Object.entries(company.sentiment_distribution).sort(([, a], [, b]) => b - a)[0]?.[0] ?? "unknown")
     : "unknown";
-  const config = SENTIMENT_CONFIG[dominant as keyof typeof SENTIMENT_CONFIG] ?? SENTIMENT_CONFIG.unknown;
+  const config = SENTIMENT_CONFIG[dominant as Sentiment] ?? SENTIMENT_CONFIG.unknown;
 
   return (
     <Link

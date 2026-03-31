@@ -46,7 +46,7 @@ export function DashboardContent() {
   }
 
   return (
-    <div className="space-y-6" aria-live="polite">
+    <div className="space-y-6">
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold leading-tight">경쟁사 현황</h2>

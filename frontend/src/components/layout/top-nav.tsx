@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { BarChart3, Newspaper, GitCompareArrows, Settings, Menu, X } from "lucide-react";
+import { BarChart3, Newspaper, GitCompareArrows, Settings, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 
 const NAV_ITEMS = [
@@ -26,7 +26,6 @@ export function TopNav() {
           <span>BARO</span>
         </Link>
 
-        {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-6" aria-label="메인 메뉴">
           {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
             <Link
@@ -40,7 +39,6 @@ export function TopNav() {
           ))}
         </nav>
 
-        {/* Mobile nav */}
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
             className="md:hidden inline-flex items-center justify-center min-h-[44px] min-w-[44px] rounded-lg hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 motion-safe:transition-colors"
