@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.exception_handlers import register_exception_handlers
+from app.domains.company.router import router as company_router
 
 
 @asynccontextmanager
@@ -27,6 +28,8 @@ def create_app() -> FastAPI:
     )
 
     register_exception_handlers(app)
+
+    app.include_router(company_router, prefix="/api")
 
     return app
 
