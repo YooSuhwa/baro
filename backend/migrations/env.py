@@ -19,6 +19,8 @@ target_metadata = Base.metadata
 # Domain models - import all for autogenerate
 from app.domains.company.models import Company, SearchKeyword  # noqa: F401
 from app.domains.product.models import Product, SpecValue  # noqa: F401
+from app.domains.news.models import NewsArticle  # noqa: F401
+from app.domains.spec_change.models import SpecChangeRequest  # noqa: F401
 from app.domains.spec_field.models import SpecField  # noqa: F401
 
 
