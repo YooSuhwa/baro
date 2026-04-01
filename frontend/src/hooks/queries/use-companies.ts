@@ -5,10 +5,10 @@ import { companiesApi } from "@/lib/api/companies";
 import { queryKeys } from "@/lib/query-keys";
 import type { CompanyCreate, CompanyUpdate } from "@/types/company";
 
-export function useCompanies(offset = 0, limit = 20) {
+export function useCompanies(offset = 0, limit = 20, isOwnCompany?: boolean) {
   return useQuery({
-    queryKey: [...queryKeys.companies.lists(), offset, limit],
-    queryFn: () => companiesApi.list(offset, limit),
+    queryKey: [...queryKeys.companies.lists(), offset, limit, isOwnCompany],
+    queryFn: () => companiesApi.list(offset, limit, isOwnCompany),
   });
 }
 

@@ -9,7 +9,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { useCompanies } from "@/hooks/queries/use-companies";
 
 export default function CompaniesPage() {
-  const { data, isLoading } = useCompanies();
+  const { data, isLoading } = useCompanies(0, 100, false);
 
   if (isLoading) {
     return (

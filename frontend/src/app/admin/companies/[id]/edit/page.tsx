@@ -169,7 +169,7 @@ function EditCompanyForm({ companyId }: { companyId: string }) {
                 <input
                   value={keywordInput}
                   onChange={(e) => setKeywordInput(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addKeyword(); } }}
+                  onKeyDown={(e) => { if (e.key === "Enter" && !e.nativeEvent.isComposing) { e.preventDefault(); addKeyword(); } }}
                   className="flex-1 rounded-lg border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="키워드 입력 후 Enter"
                 />
