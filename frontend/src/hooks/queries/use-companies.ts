@@ -12,6 +12,13 @@ export function useCompanies(offset = 0, limit = 20) {
   });
 }
 
+export function useOwnCompany() {
+  return useQuery({
+    queryKey: queryKeys.companies.own(),
+    queryFn: companiesApi.getOwn,
+  });
+}
+
 export function useCompany(id: string) {
   return useQuery({
     queryKey: queryKeys.companies.detail(id),

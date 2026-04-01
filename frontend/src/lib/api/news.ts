@@ -3,11 +3,12 @@ import type { NewsArticle, NewsCompareResponse } from "@/types/news";
 import { api } from "./client";
 
 export const newsApi = {
-  list: (params?: { company_id?: string; sentiment?: string; period?: string; offset?: number; limit?: number }) => {
+  list: (params?: { company_id?: string; sentiment?: string; period?: string; is_own_company?: boolean; offset?: number; limit?: number }) => {
     const searchParams = new URLSearchParams();
     if (params?.company_id) searchParams.set("company_id", params.company_id);
     if (params?.sentiment) searchParams.set("sentiment", params.sentiment);
     if (params?.period) searchParams.set("period", params.period);
+    if (params?.is_own_company !== undefined) searchParams.set("is_own_company", String(params.is_own_company));
     searchParams.set("offset", String(params?.offset ?? 0));
     searchParams.set("limit", String(params?.limit ?? 20));
     return api.get<PaginatedResponse<NewsArticle>>(`/news?${searchParams.toString()}`);

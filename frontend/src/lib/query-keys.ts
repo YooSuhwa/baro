@@ -2,6 +2,7 @@ export const queryKeys = {
   companies: {
     all: ["companies"] as const,
     lists: () => [...queryKeys.companies.all, "list"] as const,
+    own: () => [...queryKeys.companies.all, "own"] as const,
     detail: (id: string) => [...queryKeys.companies.all, "detail", id] as const,
   },
   products: {

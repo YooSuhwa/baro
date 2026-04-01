@@ -1,17 +1,31 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft, Crown, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { PageHeader } from "@/components/shared/page-header";
 import { useCreateCompany } from "@/hooks/queries/use-companies";
+import { ApiClientError } from "@/lib/api/client";
 import { toast } from "sonner";
 
 export default function NewCompanyPage() {
+  return (
+    <Suspense>
+      <NewCompanyForm />
+    </Suspense>
+  );
+}
+
+function NewCompanyForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isOwnMode = searchParams.get("own") === "true";
+
   const createCompany = useCreateCompany();
+  const [isOwnCompany, setIsOwnCompany] = useState(isOwnMode);
   const [keywords, setKeywords] = useState<string[]>([]);
   const [keywordInput, setKeywordInput] = useState("");
 
@@ -39,22 +53,30 @@ export default function NewCompanyPage() {
         revenue: (form.get("revenue") as string) || undefined,
         website_url: (form.get("website_url") as string) || undefined,
         description: (form.get("description") as string) || undefined,
+        is_own_company: isOwnCompany,
         search_keywords: keywords,
       });
-      toast.success("경쟁사가 등록되었습니다.");
-      router.push("/companies");
+      toast.success(isOwnCompany ? "자사가 등록되었습니다." : "경쟁사가 등록되었습니다.");
+      router.push(isOwnCompany ? "/" : "/companies");
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "등록에 실패했습니다."; toast.error(message);
+      if (err instanceof ApiClientError && err.code === "OWN_COMPANY_EXISTS") {
+        toast.error("이미 자사가 등록되어 있습니다.");
+      } else {
+        const message = err instanceof Error ? err.message : "등록에 실패했습니다.";
+        toast.error(message);
+      }
     }
   };
+
+  const title = isOwnCompany ? "자사 등록" : "경쟁사 등록";
 
   return (
     <div className="space-y-6 max-w-2xl">
       <div className="flex items-center gap-3">
-        <Link href="/companies" className="text-slate-400 hover:text-slate-600 motion-safe:transition-colors">
+        <Link href={isOwnMode ? "/" : "/companies"} className="text-slate-400 hover:text-slate-600 motion-safe:transition-colors">
           <ArrowLeft className="h-5 w-5" />
         </Link>
-        <PageHeader title="경쟁사 등록" />
+        <PageHeader title={title} />
       </div>
 
       <Card>
@@ -63,6 +85,20 @@ export default function NewCompanyPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Own company toggle */}
+            <div className="flex items-center gap-3 rounded-lg border border-slate-200 px-3 py-3">
+              <Checkbox
+                id="is_own_company"
+                checked={isOwnCompany}
+                onCheckedChange={(checked) => setIsOwnCompany(checked === true)}
+              />
+              <label htmlFor="is_own_company" className="flex items-center gap-2 text-sm font-medium text-slate-700 cursor-pointer">
+                <Crown className="h-4 w-4 text-blue-500" aria-hidden="true" />
+                자사로 등록
+              </label>
+              <span className="text-xs text-slate-400 ml-auto">자사는 1개만 등록 가능</span>
+            </div>
+
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
                 회사명 <span className="text-red-500">*</span>
@@ -132,7 +168,7 @@ export default function NewCompanyPage() {
             </div>
 
             <div className="flex justify-end gap-3 pt-4 border-t">
-              <Link href="/companies" className="rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 motion-safe:transition-colors min-h-[44px] inline-flex items-center">
+              <Link href={isOwnMode ? "/" : "/companies"} className="rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 motion-safe:transition-colors min-h-[44px] inline-flex items-center">
                 취소
               </Link>
               <button
@@ -140,7 +176,7 @@ export default function NewCompanyPage() {
                 disabled={createCompany.isPending}
                 className="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 motion-safe:transition-colors min-h-[44px] disabled:opacity-50"
               >
-                {createCompany.isPending ? "등록 중..." : "등록"}
+                {createCompany.isPending ? "등록 중..." : title}
               </button>
             </div>
           </form>
