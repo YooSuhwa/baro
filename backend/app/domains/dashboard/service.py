@@ -22,28 +22,34 @@ class DashboardService:
     async def get_summary(self) -> DashboardSummaryResponse:
         companies, _ = await self.company_repo.list(offset=0, limit=100)
 
-        company_cards = []
+        own_company_card: CompanyCard | None = None
+        competitor_cards: list[CompanyCard] = []
+
         for c in companies:
             news_count = await self.news_repo.count_by_company(c.id)
             sentiment_dist = await self.news_repo.get_sentiment_distribution(c.id)
             products = await self.product_repo.list_by_company(c.id)
-            product_count = len(products)
 
-            company_cards.append(
-                CompanyCard(
-                    id=c.id,
-                    name=c.name,
-                    news_count=news_count,
-                    product_count=product_count,
-                    sentiment_distribution=sentiment_dist,
-                )
+            card = CompanyCard(
+                id=c.id,
+                name=c.name,
+                is_own_company=c.is_own_company,
+                news_count=news_count,
+                product_count=len(products),
+                sentiment_distribution=sentiment_dist,
             )
+
+            if c.is_own_company:
+                own_company_card = card
+            else:
+                competitor_cards.append(card)
 
         recent_news = await self.news_repo.get_recent(limit=10)
         pending_count = await self.spec_change_repo.count_pending()
 
         return DashboardSummaryResponse(
-            companies=company_cards,
+            own_company=own_company_card,
+            companies=competitor_cards,
             recent_news=[NewsResponse.model_validate(n) for n in recent_news],
             pending_spec_changes_count=pending_count,
         )

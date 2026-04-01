@@ -1,6 +1,6 @@
 import uuid
 
-from app.core.exceptions import DuplicateError, NotFoundError
+from app.core.exceptions import BusinessRuleError, DuplicateError, NotFoundError
 from app.domains.company.models import Company, SearchKeyword
 from app.domains.company.repository import CompanyRepository
 from app.domains.company.schemas import CompanyCreate, CompanyResponse, CompanyUpdate
@@ -10,9 +10,15 @@ class CompanyService:
     def __init__(self, repo: CompanyRepository):
         self.repo = repo
 
-    async def list(self, offset: int = 0, limit: int = 20) -> tuple[list[CompanyResponse], int]:
-        companies, total = await self.repo.list(offset, limit)
+    async def list(
+        self, offset: int = 0, limit: int = 20, is_own_company: bool | None = None
+    ) -> tuple[list[CompanyResponse], int]:
+        companies, total = await self.repo.list(offset, limit, is_own_company)
         return [self._to_response(c) for c in companies], total
+
+    async def get_own_company(self) -> CompanyResponse | None:
+        company = await self.repo.get_own_company()
+        return self._to_response(company) if company else None
 
     async def get(self, company_id: uuid.UUID) -> CompanyResponse:
         company = await self.repo.get_by_id(company_id)
@@ -24,6 +30,15 @@ class CompanyService:
         existing = await self.repo.get_by_name(data.name)
         if existing:
             raise DuplicateError("company", "name", str(existing.id))
+
+        if data.is_own_company:
+            existing_own = await self.repo.get_own_company()
+            if existing_own:
+                raise BusinessRuleError(
+                    "OWN_COMPANY_EXISTS",
+                    "자사는 1개만 등록할 수 있습니다",
+                    {"existing_id": str(existing_own.id)},
+                )
 
         company = Company(
             name=data.name,
@@ -47,6 +62,15 @@ class CompanyService:
             existing = await self.repo.get_by_name(data.name)
             if existing:
                 raise DuplicateError("company", "name", str(existing.id))
+
+        if "is_own_company" in update_fields and data.is_own_company and not company.is_own_company:
+            existing_own = await self.repo.get_own_company()
+            if existing_own and existing_own.id != company.id:
+                raise BusinessRuleError(
+                    "OWN_COMPANY_EXISTS",
+                    "자사는 1개만 등록할 수 있습니다",
+                    {"existing_id": str(existing_own.id)},
+                )
 
         for field in update_fields - {"search_keywords"}:
             setattr(company, field, getattr(data, field))

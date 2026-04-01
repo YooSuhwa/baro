@@ -32,3 +32,8 @@ class DuplicateError(AppError):
 class ValidationError(AppError):
     def __init__(self, message: str, details: dict | None = None):
         super().__init__(code="VALIDATION_ERROR", message=message, details=details)
+
+
+class BusinessRuleError(AppError):
+    def __init__(self, code: str, message: str, details: dict | None = None):
+        super().__init__(code=code, message=message, details=details)

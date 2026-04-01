@@ -1,7 +1,7 @@
 from fastapi import Request
 from fastapi.responses import JSONResponse
 
-from app.core.exceptions import AppError, DuplicateError, NotFoundError, ValidationError
+from app.core.exceptions import AppError, BusinessRuleError, DuplicateError, NotFoundError, ValidationError
 
 
 def register_exception_handlers(app):
@@ -23,6 +23,13 @@ def register_exception_handlers(app):
     async def validation_handler(request: Request, exc: ValidationError):
         return JSONResponse(
             status_code=400,
+            content={"error": exc.code, "message": exc.message, "details": exc.details},
+        )
+
+    @app.exception_handler(BusinessRuleError)
+    async def business_rule_handler(request: Request, exc: BusinessRuleError):
+        return JSONResponse(
+            status_code=409,
             content={"error": exc.code, "message": exc.message, "details": exc.details},
         )
 

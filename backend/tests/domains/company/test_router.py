@@ -109,3 +109,51 @@ class TestCompanyDelete:
     async def test_delete_not_found(self, client: AsyncClient):
         response = await client.delete("/api/companies/00000000-0000-0000-0000-000000000000")
         assert response.status_code == 404
+
+
+class TestOwnCompany:
+    async def test_create_own_company(self, client: AsyncClient):
+        response = await client.post("/api/companies", json={"name": "우리회사", "is_own_company": True})
+        assert response.status_code == 201
+        assert response.json()["is_own_company"] is True
+
+    async def test_create_second_own_company_fails(self, client: AsyncClient):
+        await client.post("/api/companies", json={"name": "자사1", "is_own_company": True})
+        response = await client.post("/api/companies", json={"name": "자사2", "is_own_company": True})
+        assert response.status_code == 409
+        assert response.json()["error"] == "OWN_COMPANY_EXISTS"
+
+    async def test_get_own_company(self, client: AsyncClient):
+        await client.post("/api/companies", json={"name": "자사", "is_own_company": True})
+        response = await client.get("/api/companies/own")
+        assert response.status_code == 200
+        assert response.json()["name"] == "자사"
+        assert response.json()["is_own_company"] is True
+
+    async def test_get_own_company_none(self, client: AsyncClient):
+        response = await client.get("/api/companies/own")
+        assert response.status_code == 204
+
+    async def test_update_to_own_company(self, client: AsyncClient):
+        create = await client.post("/api/companies", json={"name": "일반회사"})
+        cid = create.json()["id"]
+        response = await client.put(f"/api/companies/{cid}", json={"is_own_company": True})
+        assert response.status_code == 200
+        assert response.json()["is_own_company"] is True
+
+    async def test_update_to_own_company_conflict(self, client: AsyncClient):
+        await client.post("/api/companies", json={"name": "자사", "is_own_company": True})
+        create = await client.post("/api/companies", json={"name": "경쟁사"})
+        cid = create.json()["id"]
+        response = await client.put(f"/api/companies/{cid}", json={"is_own_company": True})
+        assert response.status_code == 409
+
+    async def test_list_filter_own_company(self, client: AsyncClient):
+        await client.post("/api/companies", json={"name": "자사", "is_own_company": True})
+        await client.post("/api/companies", json={"name": "경쟁사1"})
+        await client.post("/api/companies", json={"name": "경쟁사2"})
+        response = await client.get("/api/companies?is_own_company=true")
+        assert response.json()["total"] == 1
+        assert response.json()["items"][0]["name"] == "자사"
+        response2 = await client.get("/api/companies?is_own_company=false")
+        assert response2.json()["total"] == 2
